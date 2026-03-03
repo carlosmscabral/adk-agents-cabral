@@ -62,14 +62,16 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
 cd external_oauth_agent
 # Set the environment variable so the agent knows which key to look for
 export AUTH_ID="my-adk-agent-auth" 
+# Set the URL of your deployed Cloud Run API (from Step 3)
+export API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
 
 adk deploy agent_engine \
   --project your-google-cloud-project-id \
   --region us-central1 \
-  --env_vars AUTH_ID=${AUTH_ID} \
+  --env_vars AUTH_ID=${AUTH_ID},API_URL=${API_URL} \
   app
 ```
-*Note the returned Reasoning Engine resource name.*
+*Note: The agent code in `app/tools.py` dynamically reads `API_URL` from the environment. Ensure this is set correctly to point to your protected endpoint.*
 
 ### 5. Register Your ADK Agent in Gemini Enterprise
 Link your deployed Agent Engine resource with the Authorization resource you created in step 2.
