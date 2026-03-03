@@ -49,7 +49,6 @@ cd external_oauth_agent
 
 gcloud run deploy mock-protected-api \
   --source . \
-  --dockerfile Dockerfile.api \
   --region us-central1 \
   --allow-unauthenticated \
   --set-env-vars="OIDC_WELL_KNOWN_URL=http://34.111.38.17.nip.io/realms/cabral/.well-known/openid-configuration"
