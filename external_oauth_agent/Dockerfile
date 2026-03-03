@@ -11,10 +11,9 @@ WORKDIR $APP_HOME
 
 # Copy only the files needed for the API
 COPY api_server/ ./api_server/
-COPY requirements.txt .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies from the API's requirements file
+RUN pip install --no-cache-dir -r api_server/requirements.txt
 
 # Run the web service on container startup using uvicorn.
 # Port is provided by Cloud Run.
