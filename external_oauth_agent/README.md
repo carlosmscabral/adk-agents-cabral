@@ -75,14 +75,16 @@ gcloud run deploy mock-protected-api \
 ### 4. Deploy the ADK Agent (Vertex AI Agent Engine)
 Deploy the agent code using the ADK CLI. Ensure your `app/` directory is packaged correctly.
 
-1.  Add the following to your `external_oauth_agent/.env` file:
+1.  **Configure Environment Variables**:
+    Ensure your `external_oauth_agent/.env` file contains the following. These variables will be automatically read by the `adk` CLI and deployed as environment variables to the Reasoning Engine:
     ```bash
+    # The dynamic key Gemini Enterprise will use to pass the token
     AUTH_ID="my-adk-agent-auth"
-    # Set the URL of your deployed Cloud Run API (from Step 3)
+    # The URL of your deployed Cloud Run API (Update after Step 3)
     API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
     ```
 
-2.  Run the deployment command:
+2.  **Run the deployment command**:
     ```bash
     cd external_oauth_agent
     uv run adk deploy agent_engine \
