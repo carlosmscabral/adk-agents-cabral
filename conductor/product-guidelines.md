@@ -8,7 +8,8 @@ These guidelines ensure all Google ADK Python demo agents within this repository
 
 ## 2. Project Structure
 - **Modular (Separated):** Each demo agent will reside in its own isolated folder.
-- **Standard Layout:** Enforce a clean separation of concerns within each folder (e.g., `agent.py` for orchestration, `tools.py` for tool definitions, `__init__.py` for packaging, and an `.env` template).
+- **Standard Layout:** Enforce a clean separation of concerns within each folder (e.g., `agent.py` for orchestration, `tools.py` for tool definitions, `__init__.py` for packaging).
+- **Environment Variables:** Because actual `.env` files are ignored by git (to protect secrets), **every project must include an `.env.template` file**. This template must contain all required environment variable keys (with placeholder values) and must be committed to the repository to serve as a structural reference for users.
 - **Strict Service Isolation:** If a demo includes supplementary services alongside the ADK agent (e.g., a mock REST API or a frontend UI), they must be strictly isolated. Each service must have its own dedicated subdirectory, dependency manifest (e.g., `requirements.txt`), and deployment configuration (e.g., `Dockerfile`). Never mix agent SDK dependencies with supplementary service dependencies to prevent bloated or insecure container images.
 
 ## 3. Error Handling & Resilience
