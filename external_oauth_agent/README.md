@@ -24,6 +24,9 @@ You must configure an OAuth client within your Keycloak Realm that Gemini Enterp
    ```
    https://vertexaisearch.cloud.google.com/oauth-redirect
    ```
+   ```
+   https://vertexaisearch.cloud.google.com/static/oauth/oauth.html
+   ```
 6. Ensure **Client Authentication** is ON if you want a confidential client, and note down the **Client ID** and **Client Secret** (from the Credentials tab).
 7. Note your Realm's OpenID Configuration URL (e.g., `http://34.111.38.17.nip.io/realms/cabral/.well-known/openid-configuration`).
 
