@@ -33,14 +33,28 @@ You must configure an OAuth client within your Keycloak Realm that Gemini Enterp
 ### 2. Create an Authorization Resource in Gemini Enterprise
 Gemini Enterprise requires an Authorization resource to securely store the client credentials, rather than hardcoding them in the agent.
 
-*Note: This step is typically done via the Vertex AI Discovery Engine API.*
+Use the Vertex AI Discovery Engine REST API to create this resource:
 
-You need to create a configuration linking:
-- `AUTH_ID`: A unique identifier (e.g., `my-adk-agent-auth`). This is critical as it maps the token to the ADK session state.
-- `OAUTH_CLIENT_ID`: From step 1.
-- `OAUTH_CLIENT_SECRET`: From step 1.
-- `OAUTH_AUTH_URI`: The authorization endpoint from Keycloak's openid-configuration (e.g., `http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fstatic%2Foauth%2Foauth.html&response_type=code&access_type=offline&prompt=consent`).
-- `OAUTH_TOKEN_URI`: The token endpoint from Keycloak's openid-configuration (e.g., `http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token`).
+```bash
+export PROJECT_ID="your-google-cloud-project-id"
+export LOCATION="global"
+export AUTH_ID="my-adk-agent-auth" # This is critical as it maps the token to the ADK session state
+
+curl -X POST \
+   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+   -H "Content-Type: application/json" \
+   -H "X-Goog-User-Project: ${PROJECT_ID}" \
+   "https://discoveryengine.googleapis.com/v1alpha/projects/${PROJECT_ID}/locations/${LOCATION}/authorizations?authorizationId=${AUTH_ID}" \
+   -d '{
+      "name": "projects/'${PROJECT_ID}'/locations/'${LOCATION}'/authorizations/'${AUTH_ID}'",
+      "serverSideOauth2": {
+         "clientId": "YOUR_OAUTH_CLIENT_ID",
+         "clientSecret": "YOUR_OAUTH_CLIENT_SECRET",
+         "authorizationUri": "http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fstatic%2Foauth%2Foauth.html&response_type=code&access_type=offline&prompt=consent",
+         "tokenUri": "http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token"
+      }
+   }'
+```
 
 ### 3. Deploy the Target API (Cloud Run)
 To test the flow, you need the protected API running.
@@ -79,17 +93,34 @@ adk deploy agent_engine \
 ### 5. Register Your ADK Agent in Gemini Enterprise
 Link your deployed Agent Engine resource with the Authorization resource you created in step 2.
 
-When defining the agent payload for Gemini Enterprise, ensure you include the `authorizationConfig`:
-```json
-{
-  "name": "projects/{PROJECT_ID}/locations/{LOCATION}/collections/default_collection/engines/{ENGINE_ID}/agents/{AGENT_ID}",
-  "displayName": "Financial Data Agent",
-  "agentEngineResource": "projects/{PROJECT_ID}/locations/{LOCATION}/reasoningEngines/{REASONING_ENGINE_ID}",
-  "authorizationConfig": {
-    "authorizationId": "{AUTH_ID}"
-  },
-  // ... other configs
-}
+You can register the agent using the Vertex AI Discovery Engine REST API. Notice the `authorization_config` section linking to your `AUTH_ID`:
+
+```bash
+export PROJECT_ID="your-google-cloud-project-id"
+export PROJECT_NUMBER="your-google-cloud-project-number"
+export APP_ID="your-gemini-enterprise-app-id"
+export ADK_RESOURCE_ID="your-reasoning-engine-resource-id" # E.g., 1234567890
+export AUTH_ID="my-adk-agent-auth"
+
+curl -X POST \
+   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+   -H "Content-Type: application/json" \
+   -H "X-Goog-User-Project: ${PROJECT_ID}" \
+   "https://discoveryengine.googleapis.com/v1alpha/projects/${PROJECT_ID}/locations/global/collections/default_collection/engines/${APP_ID}/assistants/default_assistant/agents" \
+   -d '{
+      "displayName": "Financial Data Agent",
+      "description": "An assistant that helps users retrieve their protected financial data.",
+      "adk_agent_definition": {
+         "provisioned_reasoning_engine": {
+            "reasoning_engine": "projects/'${PROJECT_ID}'/locations/us-central1/reasoningEngines/'${ADK_RESOURCE_ID}'"
+         }
+      },
+      "authorization_config": {
+         "tool_authorizations": [
+            "projects/'${PROJECT_NUMBER}'/locations/global/authorizations/'${AUTH_ID}'"
+         ]
+      }
+   }'
 ```
 
 ---
