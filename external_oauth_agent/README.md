@@ -50,7 +50,7 @@ curl -X POST \
       "serverSideOauth2": {
          "clientId": "YOUR_OAUTH_CLIENT_ID",
          "clientSecret": "YOUR_OAUTH_CLIENT_SECRET",
-         "authorizationUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fstatic%2Foauth%2Foauth.html&response_type=code&access_type=offline&prompt=consent",
+         "authorizationUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth",
          "tokenUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token"
       }
    }'
@@ -75,7 +75,14 @@ gcloud run deploy mock-protected-api \
 ### 4. Deploy the ADK Agent (Vertex AI Agent Engine)
 Deploy the agent code using the ADK CLI. Ensure your `app/` directory is packaged correctly.
 
-1.  **Configure Environment Variables**:
+1.  **Export Dependencies**:
+    The `adk deploy agent_engine` command currently requires a `requirements.txt` file to package dependencies. Since we use `pyproject.toml`, you must export them first:
+    ```bash
+    cd external_oauth_agent
+    uv export --no-hashes --no-emit-project > requirements.txt
+    ```
+
+2.  **Configure Environment Variables**:
     Ensure your `external_oauth_agent/.env` file contains the following. These variables will be automatically read by the `adk` CLI and deployed as environment variables to the Reasoning Engine:
     ```bash
     # The dynamic key Gemini Enterprise will use to pass the token
@@ -84,14 +91,14 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
     API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
     ```
 
-2.  **Run the deployment command**:
+3.  **Run the deployment command**:
     ```bash
-    cd external_oauth_agent
     uv run adk deploy agent_engine \
       --project your-google-cloud-project-id \
       --region us-central1 \
       app
     ```
+    *(You can optionally delete the generated `requirements.txt` after deployment).*
 *Note: The `adk` CLI will automatically pick up environment variables from the `.env` file in the agent directory by default.*
 
 ### 5. Register Your ADK Agent in Gemini Enterprise
