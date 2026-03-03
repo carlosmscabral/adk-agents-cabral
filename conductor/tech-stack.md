@@ -8,7 +8,7 @@ This document outlines the core technologies, frameworks, and deployment targets
 - **Dependency Management:** `uv` (Fast Python package and project manager)
 
 ## Model Providers
-- **Primary Models:** Google Gemini Models (e.g., `gemini-2.5-flash`, `gemini-2.5-pro`) via native integration.
+- **Primary Models:** Google Gemini Models (e.g., `gemini-2.5-flash`, `gemini-2.5-pro`) exclusively via Vertex AI integration (`GOOGLE_GENAI_USE_VERTEXAI=1`). Google AI Studio API Keys must not be used.
 
 ## Infrastructure & Deployment
 *Deployment targets will vary based on the specific demo's use case, but may include:*
