@@ -1,0 +1,15 @@
+[project]
+name = "external-oauth-agent"
+version = "0.1.0"
+description = "A Google ADK Python agent demonstrating external OAuth/OIDC tool authentication."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk",
+    "requests",
+    "pyjwt",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

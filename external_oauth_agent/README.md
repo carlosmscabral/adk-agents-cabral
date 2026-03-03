@@ -106,6 +106,7 @@ export APP_ID="your-gemini-enterprise-app-id"
 export ADK_RESOURCE_ID="your-reasoning-engine-resource-id" # E.g., 1234567890
 export AUTH_ID="my-adk-agent-auth"
 
+
 curl -X POST \
    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
    -H "Content-Type: application/json" \
@@ -150,3 +151,22 @@ The API (`api_server/main.py`) then validates this token by:
 2. Extracting the `kid` (Key ID) from the incoming token's header.
 3. Finding the matching public key in the JWKS.
 4. Using that public key to cryptographically verify the token's signature.
+
+## Local Testing
+You can simulate this entire process locally without deploying.
+
+1. **Sync the Agent Environment**: This will automatically create a `.venv` and install the core agent dependencies defined in `pyproject.toml`.
+   ```bash
+   uv sync
+   ```
+2. **Start the mock API** in one terminal. (We install the API's specific dependencies into the local environment just for testing):
+   ```bash
+   uv pip install -r api_server/requirements.txt
+   uv run uvicorn api_server.main:app --port 8000
+   ```
+3. **Run the test script** in another terminal:
+   ```bash
+   uv run python run_agent.py
+   ```
+
+The script manually generates a mock JWT and injects it into the `InMemorySessionService` state, mimicking the behavior of Gemini Enterprise.
