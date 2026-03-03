@@ -50,8 +50,8 @@ curl -X POST \
       "serverSideOauth2": {
          "clientId": "YOUR_OAUTH_CLIENT_ID",
          "clientSecret": "YOUR_OAUTH_CLIENT_SECRET",
-         "authorizationUri": "http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fstatic%2Foauth%2Foauth.html&response_type=code&access_type=offline&prompt=consent",
-         "tokenUri": "http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token"
+         "authorizationUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fstatic%2Foauth%2Foauth.html&response_type=code&access_type=offline&prompt=consent",
+         "tokenUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token"
       }
    }'
 ```
@@ -68,27 +68,29 @@ gcloud run deploy mock-protected-api \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars="OIDC_WELL_KNOWN_URL=http://34.111.38.17.nip.io/realms/cabral/.well-known/openid-configuration"
+  --set-env-vars="OIDC_WELL_KNOWN_URL=https://34.111.38.17.nip.io/realms/cabral/.well-known/openid-configuration"
 ```
 *Note the returned URL and update `API_URL` in `app/tools.py` if necessary.*
 
 ### 4. Deploy the ADK Agent (Vertex AI Agent Engine)
 Deploy the agent code using the ADK CLI. Ensure your `app/` directory is packaged correctly.
 
-```bash
-cd external_oauth_agent
-# Set the environment variable so the agent knows which key to look for
-export AUTH_ID="my-adk-agent-auth" 
-# Set the URL of your deployed Cloud Run API (from Step 3)
-export API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
+1.  Add the following to your `external_oauth_agent/.env` file:
+    ```bash
+    AUTH_ID="my-adk-agent-auth"
+    # Set the URL of your deployed Cloud Run API (from Step 3)
+    API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
+    ```
 
-adk deploy agent_engine \
-  --project your-google-cloud-project-id \
-  --region us-central1 \
-  --env_vars AUTH_ID=${AUTH_ID},API_URL=${API_URL} \
-  app
-```
-*Note: The agent code in `app/tools.py` dynamically reads `API_URL` from the environment. Ensure this is set correctly to point to your protected endpoint.*
+2.  Run the deployment command:
+    ```bash
+    cd external_oauth_agent
+    uv run adk deploy agent_engine \
+      --project your-google-cloud-project-id \
+      --region us-central1 \
+      app
+    ```
+*Note: The `adk` CLI will automatically pick up environment variables from the `.env` file in the agent directory by default.*
 
 ### 5. Register Your ADK Agent in Gemini Enterprise
 Link your deployed Agent Engine resource with the Authorization resource you created in step 2.
