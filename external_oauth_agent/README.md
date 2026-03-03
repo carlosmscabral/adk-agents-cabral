@@ -36,7 +36,7 @@ You need to create a configuration linking:
 - `AUTH_ID`: A unique identifier (e.g., `my-adk-agent-auth`). This is critical as it maps the token to the ADK session state.
 - `OAUTH_CLIENT_ID`: From step 1.
 - `OAUTH_CLIENT_SECRET`: From step 1.
-- `OAUTH_AUTH_URI`: The authorization endpoint from Keycloak's openid-configuration (e.g., `http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth`).
+- `OAUTH_AUTH_URI`: The authorization endpoint from Keycloak's openid-configuration (e.g., `http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Fstatic%2Foauth%2Foauth.html&response_type=code&access_type=offline&prompt=consent`).
 - `OAUTH_TOKEN_URI`: The token endpoint from Keycloak's openid-configuration (e.g., `http://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token`).
 
 ### 3. Deploy the Target API (Cloud Run)

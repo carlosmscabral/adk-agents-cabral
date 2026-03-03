@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.DS_Store
+adk-python/
+adk-samples/
+.adk/
+.venv/
+**/.adk/
+**/.venv/
+**/session.db
+simple-apigee-mcp/
