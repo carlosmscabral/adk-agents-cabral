@@ -5,7 +5,7 @@ This document outlines the core technologies, frameworks, and deployment targets
 ## Core Language & SDK
 - **Language:** Python
 - **SDK:** Google Agent Development Kit (ADK) (`google-adk`)
-- **Dependency Management:** `uv` (Fast Python package and project manager). All agent projects **must use `pyproject.toml`** as their primary dependency manifest. Local setups should be initialized using `uv sync` to ensure isolated and reproducible `.venv` environments. Auxiliary services (like mock APIs in subdirectories) may use `requirements.txt` if preferred for simpler containerization.
+- **Dependency Management:** `uv` (Fast Python package and project manager). All agent projects **must use `pyproject.toml`** as their primary dependency manifest. Because these demo agents are standalone executable applications rather than installable Python libraries, the `pyproject.toml` must include `[tool.uv] package = false` (or omit the `[build-system]` section) to prevent local editable build errors during `uv sync`. Local setups should be initialized using `uv sync` to ensure isolated and reproducible `.venv` environments. Auxiliary services (like mock APIs in subdirectories) may use `requirements.txt` if preferred for simpler containerization.
 
 ## Model Providers
 - **Primary Models:** Google Gemini Models (e.g., `gemini-2.5-flash`, `gemini-2.5-pro`) exclusively via Vertex AI integration (`GOOGLE_GENAI_USE_VERTEXAI=1`). Google AI Studio API Keys must not be used.
