@@ -118,13 +118,16 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
     uv export --no-hashes --no-emit-project > requirements.txt
     ```
 
-2.  **Configure Environment Variables**:
+1.  **Configure Environment Variables**:
     Ensure your `external_oauth_agent/.env` file contains the following. These variables will be automatically read by the `adk` CLI and deployed as environment variables to the Reasoning Engine:
     ```bash
     # The dynamic key Gemini Enterprise will use to pass the token
     AUTH_ID="my-adk-agent-auth"
     # The URL of your deployed Cloud Run API (Update after Step 3)
     API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
+
+    # Enable capturing full prompt and response content in Cloud Traces
+    OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
     ```
 
 3.  **Run the deployment command**:
@@ -133,6 +136,7 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
       --project your-google-cloud-project-id \
       --region us-central1 \
       --display_name "External OAuth Agent Demo" \
+      --otel_to_cloud \
       app
     ```
     *(You can optionally delete the generated `requirements.txt` after deployment).*
