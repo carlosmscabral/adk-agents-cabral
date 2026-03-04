@@ -6,6 +6,42 @@ This setup allows Gemini Enterprise to handle the user-facing OAuth consent flow
 
 ## Architecture
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant GE as Gemini Enterprise<br/>(AgentSpace)
+    participant KC as Keycloak<br/>(OAuth IdP)
+    participant AE as ADK Agent<br/>(Vertex AI Agent Engine)
+    participant CR as Target API<br/>(Cloud Run / FastAPI)
+
+    U->>GE: "Fetch my financial data"
+    GE->>AE: Forward query
+    AE-->>GE: Require Tool: `fetch_protected_financial_data`
+    
+    Note over GE,KC: OAuth 2.0 Authorization Code Flow
+    GE->>U: Redirect to Identity Provider
+    U->>KC: Authenticate & Consent
+    KC-->>GE: Authorization Code
+    GE->>KC: Exchange Code for Token
+    KC-->>GE: Access Token (JWT)
+    
+    Note over GE,AE: Token Injection into State
+    GE->>AE: Execute Tool (injects token into `tool_context.state`)
+    
+    Note over AE,CR: Authenticated API Call
+    AE->>CR: GET /api/v1/protected-data<br/>Header: `Authorization: Bearer <token>`
+    
+    CR->>KC: Fetch JWKS (Public Keys)
+    KC-->>CR: JWKS Data
+    Note over CR: Validate JWT Signature
+    
+    CR-->>AE: 200 OK (Protected Data)
+    AE->>AE: LLM synthesizes response
+    AE-->>GE: Final Agent Response
+    GE-->>U: "Here is your financial data..."
+```
+
 1.  **Target API (`api_server/`)**: A FastAPI REST service designed for Google Cloud Run. It exposes a `/api/v1/protected-data` endpoint requiring a valid Bearer token. It dynamically fetches Keycloak's JSON Web Key Set (JWKS) to mathematically verify the token's signature.
 2.  **ADK Agent (`app/`)**: The core agent logic designed for Vertex AI Agent Engine. It uses a tool that retrieves the OAuth token injected into the session state by Gemini Enterprise.
 
