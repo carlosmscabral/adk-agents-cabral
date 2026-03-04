@@ -14,3 +14,6 @@ This document defines the standard development workflow and protocols for the pr
 - Run the provided tests or programmatic scripts to ensure the agent functions properly.
 - Ensure all relevant documentation and comments are updated per the Product Guidelines.
 - Perform the Phase commit.
+
+## Track Finalization Protocol
+- When an agent/track is finalized or archived, you must update the table in the root `README.md` to document the new agent, providing a link and a brief explanation of what the agent does.
