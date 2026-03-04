@@ -6,6 +6,7 @@ from google.adk.tools import ToolContext
 
 # Configure logger for troubleshooting
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 # URL for the mock API running locally (or in Cloud Run)
 API_URL = os.getenv("API_URL", "http://localhost:8000/api/v1/protected-data")
@@ -33,7 +34,7 @@ def fetch_protected_financial_data(tool_context: ToolContext) -> Dict[str, Any]:
     logger.info(f"DEBUG: Resolved AUTH_ID from environment: '{auth_id}'")
     
     # Retrieve the access token from tool_context.state, placed there by Gemini Enterprise
-    token_key = f"temp:{auth_id}"
+    token_key = auth_id
     logger.info(f"DEBUG: Attempting to retrieve token from state using key: '{token_key}'")
     
     access_token = tool_context.state.get(token_key)
