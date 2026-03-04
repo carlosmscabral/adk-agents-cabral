@@ -132,9 +132,16 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
     AUTH_ID="my-adk-agent-auth"
     # The URL of your deployed Cloud Run API (Update after Step 3)
     API_URL="https://mock-protected-api-xyz.a.run.app/api/v1/protected-data"
+    
+    # Force the model endpoint to global to support preview models
+    MODEL_LOCATION=global
 
-    # Enable capturing full prompt and response content in Cloud Traces
+    # OpenTelemetry and Tracing Configuration
+    GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY=true
+    OTEL_SERVICE_NAME="external_oauth_agent"
+    OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
     OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+    ADK_CAPTURE_MESSAGE_CONTENT_IN_SPANS=true
     ```
 
 3.  **Run the deployment command**:
