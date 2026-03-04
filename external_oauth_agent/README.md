@@ -132,6 +132,7 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
     uv run adk deploy agent_engine \
       --project your-google-cloud-project-id \
       --region us-central1 \
+      --display_name "External OAuth Agent Demo" \
       app
     ```
     *(You can optionally delete the generated `requirements.txt` after deployment).*
