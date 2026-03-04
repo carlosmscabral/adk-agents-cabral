@@ -111,11 +111,16 @@ gcloud run deploy mock-protected-api \
 ### 4. Deploy the ADK Agent (Vertex AI Agent Engine)
 Deploy the agent code using the ADK CLI. Ensure your `app/` directory is packaged correctly.
 
-1.  **Export Dependencies**:
-    The `adk deploy agent_engine` command currently requires a `requirements.txt` file to package dependencies. Since we use `pyproject.toml`, you must export them first:
+1.  **Create a `requirements.txt`**:
+    The `adk deploy agent_engine` command uses standard `pip` in a Linux container to install dependencies. Because `uv` lockfiles can include platform-specific markers (like macOS constraints), exporting the full lockfile can cause the Cloud Build to silently fail installing certain packages (like OpenTelemetry).
+    Instead, ensure you have a simple top-level `requirements.txt` in your `external_oauth_agent/` folder:
     ```bash
-    cd external_oauth_agent
-    uv export --no-hashes --no-emit-project > requirements.txt
+    cat << 'EOF' > requirements.txt
+    google-adk
+    requests
+    PyJWT
+    opentelemetry-instrumentation-google-genai
+    EOF
     ```
 
 1.  **Configure Environment Variables**:
