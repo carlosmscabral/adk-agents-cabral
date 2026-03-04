@@ -1,11 +1,10 @@
 import os
 
 # Vertex AI Agent Engine explicitly overrides GOOGLE_CLOUD_LOCATION in its container 
-# to match the compute region (e.g., us-central1). However, some models like 
-# gemini-3-flash-preview may only be available in 'global' or specific regions.
-# We override it here so the google.genai.Client initializes against the correct model region.
-if "MODEL_LOCATION" in os.environ:
-    os.environ["GOOGLE_CLOUD_LOCATION"] = os.environ["MODEL_LOCATION"]
+# to match the compute region (e.g., us-central1). However, early access models like 
+# gemini-3-flash-preview are only available via the 'global' endpoint.
+# We aggressively override it here so the google.genai.Client initializes correctly.
+os.environ["GOOGLE_CLOUD_LOCATION"] = os.environ.get("MODEL_LOCATION", "global")
 
 from google.adk.agents import Agent
 from .tools import fetch_protected_financial_data
