@@ -120,6 +120,8 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
     requests
     PyJWT
     opentelemetry-instrumentation-google-genai
+    opentelemetry-exporter-gcp-logging
+    opentelemetry-exporter-gcp-trace
     EOF
     ```
 

@@ -30,4 +30,7 @@ These guidelines ensure all Google ADK Python demo agents within this repository
 - **Telemetry & Observability:** All Agent Engine deployments must enable OpenTelemetry by default. This requires three things:
   1. Append the `--otel_to_cloud` flag to the `adk deploy agent_engine` command.
   2. The `.env.template` must explicitly include `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` to ensure full prompt/response logging is captured.
-  3. The `pyproject.toml` dependencies MUST explicitly include `opentelemetry-instrumentation-google-genai` (as `google-cloud-aiplatform[agent_engines]` does not pull this in by default).
+  3. The `pyproject.toml` and deployment `requirements.txt` MUST explicitly include the following packages (as they are not bundled by default):
+     - `opentelemetry-instrumentation-google-genai`
+     - `opentelemetry-exporter-gcp-logging`
+     - `opentelemetry-exporter-gcp-trace`

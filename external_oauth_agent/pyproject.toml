@@ -9,6 +9,8 @@ dependencies = [
     "requests",
     "pyjwt",
     "opentelemetry-instrumentation-google-genai>=0.7b0",
+    "opentelemetry-exporter-gcp-logging>=1.11.0a0",
+    "opentelemetry-exporter-gcp-trace>=1.11.0",
 ]
 
 [tool.uv]

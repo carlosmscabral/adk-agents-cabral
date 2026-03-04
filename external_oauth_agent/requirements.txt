@@ -2,3 +2,5 @@ google-adk
 requests
 PyJWT
 opentelemetry-instrumentation-google-genai
+opentelemetry-exporter-gcp-logging
+opentelemetry-exporter-gcp-trace
