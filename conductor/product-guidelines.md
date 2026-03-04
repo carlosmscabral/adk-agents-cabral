@@ -19,3 +19,4 @@ These guidelines ensure all Google ADK Python demo agents within this repository
 - **Omni-Surface Compatibility:** Every agent must be designed to run seamlessly across all ADK surfaces.
 - **Web UI & CLI:** Code must support execution via standard console output, rich CLI (e.g., `adk run`), and the interactive web interface (`adk web`).
 - **Cloud Deployment:** Agents must be structurally compatible for immediate deployment to both Google Vertex AI Agent Engine and Google Cloud Run using the `adk deploy` CLI commands.
+- **Explicit Agent Naming:** When documenting or scripting deployments to Vertex AI Agent Engine (`adk deploy agent_engine`), you **must always include the `--display_name` flag** with a descriptive name specific to the demo (e.g., `--display_name "My Specific Demo Agent"`). Do not allow deployments to default to generic names like "app".
