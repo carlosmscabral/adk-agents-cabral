@@ -50,7 +50,7 @@ curl -X POST \
       "serverSideOauth2": {
          "clientId": "YOUR_OAUTH_CLIENT_ID",
          "clientSecret": "YOUR_OAUTH_CLIENT_SECRET",
-         "authorizationUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth",
+         "authorizationUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/auth?response_type=code&access_type=offline&prompt=consent&redirect_uri=https%3A%2F%2Fvertexaisearch.cloud.google.com%2Foauth-redirect",
          "tokenUri": "https://34.111.38.17.nip.io/realms/cabral/protocol/openid-connect/token"
       }
    }'
