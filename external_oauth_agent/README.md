@@ -202,10 +202,10 @@ In `app/tools.py`, the tool extracts this dynamically injected token from the `t
 ```python
 auth_id = os.getenv("AUTH_ID", "my-adk-agent-auth")
 
-# The string format must strictly be temp:<AUTH_ID>
-token_key = f"temp:{auth_id}"
+# The token is dynamically injected into the state using the AUTH_ID as the key
+token_key = auth_id
 
-# The token is dynamically injected here by the Gemini Enterprise framework
+# Retrieve the token
 access_token = tool_context.state.get(token_key)
 ```
 
