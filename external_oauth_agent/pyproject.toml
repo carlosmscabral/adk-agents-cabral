@@ -8,6 +8,7 @@ dependencies = [
     "google-adk",
     "requests",
     "pyjwt",
+    "opentelemetry-instrumentation-google-genai>=0.7b0",
 ]
 
 [tool.uv]

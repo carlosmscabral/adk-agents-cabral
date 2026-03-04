@@ -27,4 +27,7 @@ These guidelines ensure all Google ADK Python demo agents within this repository
   ```
   Additionally, all `.env.template` files must include `MODEL_LOCATION=global`.
 - **Explicit Agent Naming:** When documenting or scripting deployments to Vertex AI Agent Engine (`adk deploy agent_engine`), you **must always include the `--display_name` flag** with a descriptive name specific to the demo (e.g., `--display_name "My Specific Demo Agent"`). Do not allow deployments to default to generic names like "app".
-- **Telemetry & Observability:** All Agent Engine deployments must enable OpenTelemetry by default. This is done by appending the `--otel_to_cloud` flag to the `adk deploy agent_engine` command (which automatically sets `GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY=true` in the runtime). Additionally, the `.env` template should explicitly include `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` to ensure full prompt/response logging is captured in Cloud Logging.
+- **Telemetry & Observability:** All Agent Engine deployments must enable OpenTelemetry by default. This requires three things:
+  1. Append the `--otel_to_cloud` flag to the `adk deploy agent_engine` command.
+  2. The `.env.template` must explicitly include `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` to ensure full prompt/response logging is captured.
+  3. The `pyproject.toml` dependencies MUST explicitly include `opentelemetry-instrumentation-google-genai` (as `google-cloud-aiplatform[agent_engines]` does not pull this in by default).
