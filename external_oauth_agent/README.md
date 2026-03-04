@@ -143,7 +143,8 @@ Deploy the agent code using the ADK CLI. Ensure your `app/` directory is package
       --project your-google-cloud-project-id \
       --region us-central1 \
       --display_name "External OAuth Agent Demo" \
-      --otel_to_cloud \
+      --trace_to_cloud \
+      --env_file=.env \
       app
     ```
     *(You can optionally delete the generated `requirements.txt` after deployment).*
