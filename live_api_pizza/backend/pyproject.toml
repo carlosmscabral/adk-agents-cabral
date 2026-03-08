@@ -1,0 +1,12 @@
+[project]
+name = "live_api_pizza_agent"
+version = "0.1.0"
+description = "A simple pizza agent using the Live API for a conversational experience"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk",
+]
+
+[tool.uv]
+package = false
