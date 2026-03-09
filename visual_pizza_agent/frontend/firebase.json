@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "vibe-cabral",
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

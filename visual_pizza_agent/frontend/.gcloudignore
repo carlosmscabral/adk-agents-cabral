@@ -1,0 +1,6 @@
+# Exclude everything
+*
+
+# Except these
+!out/
+!Dockerfile

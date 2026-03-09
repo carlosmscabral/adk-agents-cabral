@@ -1,11 +1,11 @@
 # Implementation Plan: visual_pizza_agent
 
 ## Phase 1: Project Setup and Boilerplate
-- [ ] Task: Copy base project structure from `live_api_pizza`.
-    - [ ] Sub-task: Duplicate `backend` and `frontend` folders into `visual_pizza_agent`.
-    - [ ] Sub-task: Update `pyproject.toml` and `package.json` names to reflect `visual_pizza_agent`.
-    - [ ] Sub-task: Update backend entry points (`run_agent.py`, `api_server.py`) and connection URLs in the frontend to point to the new service if applicable.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Setup and Boilerplate' (Protocol in workflow.md)
+- [x] Task: Copy base project structure from `live_api_pizza`.
+    - [x] Sub-task: Duplicate `backend` and `frontend` folders into `visual_pizza_agent`.
+    - [x] Sub-task: Update `pyproject.toml` and `package.json` names to reflect `visual_pizza_agent`.
+    - [x] Sub-task: Update backend entry points (`run_agent.py`, `api_server.py`) and connection URLs in the frontend to point to the new service if applicable.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Project Setup and Boilerplate' (Protocol in workflow.md)
 
 ## Phase 2: Backend Implementation - Image Tool & Agent Update
 - [ ] Task: Implement `generate_pizza_image` tool.
