@@ -51,6 +51,14 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str, session_id: str
         input_audio_transcription=types.AudioTranscriptionConfig() if response_modalities == ["AUDIO"] else None,
         output_audio_transcription=types.AudioTranscriptionConfig() if response_modalities == ["AUDIO"] else None,
         session_resumption=types.SessionResumptionConfig(),
+        speech_config=types.SpeechConfig(
+            voice_config=types.VoiceConfig(
+                prebuilt_voice_config=types.PrebuiltVoiceConfig(
+                    voice_name="Fenrir",
+                )
+            ),
+            language_code="pt-BR",
+        ),
     )
 
     # Initialize session

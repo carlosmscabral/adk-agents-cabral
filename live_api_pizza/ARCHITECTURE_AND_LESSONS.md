@@ -8,7 +8,6 @@ The standard `adk api_server` CLI is optimized for text-based JSON endpoints and
 
 ### 1.1. Model Selection & Location
 - **Model:** Use models that natively support bidirectional audio streaming. 
-  - Standard: `gemini-2.0-flash-001`
   - Preview/Native: `gemini-live-2.5-flash-native-audio` (Ensure your Google Cloud Project is allowlisted for this specific model).
 - **Location:** Preview models are often restricted to specific regions (e.g., `us-central1`).
   - **CRITICAL:** Do NOT rely on Python's `os.environ` to set `GOOGLE_CLOUD_LOCATION` at runtime, as the `google-genai` SDK caches this upon import. Hardcode the environment variable in your `Dockerfile` or pass it explicitly to Cloud Run via `--set-env-vars`.

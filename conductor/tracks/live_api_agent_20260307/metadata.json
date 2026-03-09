@@ -1,8 +1,0 @@
-{
-  "track_id": "live_api_agent_20260307",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-03-07T00:00:00Z",
-  "updated_at": "2026-03-07T00:00:00Z",
-  "description": "Implement a simple agent that uses the Live API for a conversational experience with a React frontend."
-}
