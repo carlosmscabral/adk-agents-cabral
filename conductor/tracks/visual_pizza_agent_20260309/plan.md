@@ -8,14 +8,14 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Project Setup and Boilerplate' (Protocol in workflow.md)
 
 ## Phase 2: Backend Implementation - Image Tool & Agent Update
-- [ ] Task: Implement `generate_pizza_image` tool.
-    - [ ] Sub-task: Create `tools.py` in the backend app directory.
-    - [ ] Sub-task: Write `generate_pizza_image` function using `google.genai.Client` and `imagen-3.0-generate-002`, forcing a "realistic photo" style in the prompt.
-    - [ ] Sub-task: Ensure the tool returns the base64 image data or an identifier the frontend can parse.
-- [ ] Task: Update the core Agent definition.
-    - [ ] Sub-task: Import and add `generate_pizza_image` to the agent's `tools` list in `agent.py`.
-    - [ ] Sub-task: Modify the agent's `instruction` to explicitly call the image generation tool upon concluding the order.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Backend Implementation - Image Tool & Agent Update' (Protocol in workflow.md)
+- [x] Task: Implement `generate_pizza_image` tool.
+    - [x] Sub-task: Create `tools.py` in the backend app directory.
+    - [x] Sub-task: Write `generate_pizza_image` function using `google.genai.Client` and `imagen-3.0-generate-002`, forcing a "realistic photo" style in the prompt.
+    - [x] Sub-task: Ensure the tool returns the base64 image data or an identifier the frontend can parse.
+- [x] Task: Update the core Agent definition.
+    - [x] Sub-task: Import and add `generate_pizza_image` to the agent's `tools` list in `agent.py`.
+    - [x] Sub-task: Modify the agent's `instruction` to explicitly call the image generation tool upon concluding the order.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Backend Implementation - Image Tool & Agent Update' (Protocol in workflow.md)
 
 ## Phase 3: Frontend Implementation - Image Rendering
 - [ ] Task: Update the Next.js WebSocket message handler in `page.tsx`.
