@@ -14,6 +14,7 @@ The table below lists the finalized agents available in this repository:
 | --- | --- | --- |
 | **External OAuth/OIDC Tool Authentication Flow** | Demonstrates how to build an ADK Python agent that securely consumes externally generated OAuth/OIDC access tokens (e.g., from Keycloak) via Gemini Enterprise (AgentSpace). | [external_oauth_agent](./external_oauth_agent/) |
 | **Live API Conversational Pizza Agent** | Demonstrates bidirectional streaming (bidi) voice interactions using the Gemini Live API. Features a custom FastAPI backend running on Cloud Run and a React frontend utilizing Web Audio API for real-time PCM audio streaming. | [live_api_pizza](./live_api_pizza/) |
+| **Visual Pizza Agent (Imagen 3)** | Extends the live conversational agent with **Imagen 3 image generation** capabilities. The agent generates a realistic preview of the pizza as the order is completed, streaming the image back through the WebSocket as a tool response. | [visual_pizza_agent](./visual_pizza_agent/) |
 
 ## License
 

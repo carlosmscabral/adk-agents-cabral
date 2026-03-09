@@ -60,7 +60,7 @@ function pcmToWav(pcmBytes: Uint8Array, sampleRate: number) {
 
 export default function Home() {
   const [isRecording, setIsRecording] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; text?: string; image?: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: string; text?: string; image?: string; mimeType?: string }[]>([]);
   const [status, setStatus] = useState('Pronto (Ready)');
   const socketRef = useRef<WebSocket | null>(null);
   
@@ -72,7 +72,7 @@ export default function Home() {
   const audioBufferAccumulator = useRef<Uint8Array>(new Uint8Array(0));
 
   useEffect(() => {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'ws://localhost:8080/ws/pizza_user/pizza_session_live';
+    const backendUrl = 'wss://visual-pizza-agent-backend-280799742875.us-central1.run.app/ws/pizza_user/pizza_session_live';
     
     const connect = async () => {
       console.log('Connecting to:', backendUrl);
@@ -123,7 +123,7 @@ export default function Home() {
               if (part.functionResponse && part.functionResponse.name === 'generate_pizza_image') {
                 const response = part.functionResponse.response;
                 if (response.status === 'success' && response.image_base64) {
-                   setMessages(prev => [...prev, { role: 'agent', image: response.image_base64 }]);
+                   setMessages(prev => [...prev, { role: 'agent', image: response.image_base64, mimeType: response.mime_type || 'image/png' }]);
                 }
               }
             }
@@ -337,7 +337,7 @@ export default function Home() {
               {m.text && <div>{m.text}</div>}
               {m.image && (
                 <img 
-                  src={`data:image/png;base64,${m.image}`} 
+                  src={`data:${m.mimeType || 'image/png'};base64,${m.image}`} 
                   alt="Generated Pizza"
                   style={{
                     maxWidth: '100%',

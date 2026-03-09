@@ -4,3 +4,4 @@
 # Except these
 !out/
 !Dockerfile
+!nginx.conf

@@ -16,6 +16,7 @@ The repository will host a diverse set of examples organized into separate folde
 
 ## Key Capabilities Demonstrated
 Every facet of the ADK will be showcased through these demos, particularly highlighting:
+- **Multi-modal Interactions:** Real-time bidirectional streaming (BIDI) voice/audio with the Gemini Live API and image generation with **Imagen 3**.
 - **Tools & Integration:** Seamless integration with external APIs, Google Search grounding, and database interactions.
 - **Memory & Context:** Sophisticated handling of Retrieval-Augmented Generation (RAG) long-term memory, session state persistence, and artifact manipulation.
 - **Planning & Execution:** Leveraging models' built-in planners, implementing secure code execution sandboxes, and establishing safety guardrails.

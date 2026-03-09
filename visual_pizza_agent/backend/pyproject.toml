@@ -5,7 +5,9 @@ description = "A simple pizza agent using the Live API for a conversational expe
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "fastapi[standard]>=0.135.1",
     "google-adk",
+    "pillow>=12.1.1",
 ]
 
 [tool.uv]
