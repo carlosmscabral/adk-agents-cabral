@@ -9,5 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: visual_pizza_agent: new agent, based heavily on live_api_pizza, generating final image of the pizza in frontend**
+- [x] **Track: visual_pizza_agent: new agent, based heavily on live_api_pizza, generating final image of the pizza in frontend**
 *Link: [./tracks/visual_pizza_agent_20260309/](./tracks/visual_pizza_agent_20260309/)*
