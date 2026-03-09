@@ -60,7 +60,7 @@ function pcmToWav(pcmBytes: Uint8Array, sampleRate: number) {
 
 export default function Home() {
   const [isRecording, setIsRecording] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: string; text?: string; image?: string }[]>([]);
   const [status, setStatus] = useState('Pronto (Ready)');
   const socketRef = useRef<WebSocket | null>(null);
   
@@ -118,6 +118,16 @@ export default function Home() {
           }
           
           if (data.content?.parts) {
+            // Handle tool responses for pizza generation
+            for (const part of data.content.parts) {
+              if (part.functionResponse && part.functionResponse.name === 'generate_pizza_image') {
+                const response = part.functionResponse.response;
+                if (response.status === 'success' && response.image_base64) {
+                   setMessages(prev => [...prev, { role: 'agent', image: response.image_base64 }]);
+                }
+              }
+            }
+
             const textParts = data.content.parts.filter((p: any) => p.text).map((p: any) => p.text);
             if (textParts.length > 0) {
               setMessages(prev => [...prev, { role: 'agent', text: textParts.join('') }]);
@@ -279,8 +289,8 @@ export default function Home() {
       padding: '2rem'
     }}>
       <header style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ color: '#d32f2f', fontSize: '3rem', margin: 0 }}>🍕 Mama\'s Pizza Chef! 🍕</h1>
-        <p style={{ fontSize: '1.2rem', fontStyle: 'italic', color: '#1b5e20' }}>"Mamma Mia! Let\'s build the perfect pie!"</p>
+        <h1 style={{ color: '#d32f2f', fontSize: '3rem', margin: 0 }}>🍕 Visual Pizza Chef! 🍕</h1>
+        <p style={{ fontSize: '1.2rem', fontStyle: 'italic', color: '#1b5e20' }}>"Mamma Mia! I build it and show it to you!"</p>
         <button onClick={testAudioPlayback} style={{ marginTop: '1rem', padding: '0.5rem 1rem', cursor: 'pointer' }}>Test Audio Playback (Beep)</button>
       </header>
 
@@ -318,9 +328,25 @@ export default function Home() {
               borderRadius: '12px',
               maxWidth: '80%',
               border: m.role.includes('user') ? '1px solid #1b5e20' : '1px solid #fbc02d',
-              opacity: m.role.includes('partial') ? 0.7 : 1
+              opacity: m.role.includes('partial') ? 0.7 : 1,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem'
             }}>
-              <strong>{m.role.includes('user') ? 'You' : 'Chef'}:</strong> {m.text}
+              <strong>{m.role.includes('user') ? 'You' : 'Chef'}:</strong>
+              {m.text && <div>{m.text}</div>}
+              {m.image && (
+                <img 
+                  src={`data:image/png;base64,${m.image}`} 
+                  alt="Generated Pizza"
+                  style={{
+                    maxWidth: '100%',
+                    borderRadius: '8px',
+                    border: '2px solid #fff',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }}
+                />
+              )}
             </div>
           ))}
         </div>
