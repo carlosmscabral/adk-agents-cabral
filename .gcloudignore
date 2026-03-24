@@ -1,0 +1,32 @@
+# This file specifies which files and directories should be excluded 
+# when uploading source code to Google Cloud (e.g., Vertex AI Agent Engine, Cloud Run).
+
+# Standard Git & GCloud files
+.gcloudignore
+.git
+.gitignore
+.gitattributes
+
+# Environments & Dependencies
+# These are the primary cause of payload size failures
+**/.venv/
+**/node_modules/
+.env
+uv.lock
+
+# Python artifacts
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/*.so
+
+# ADK specific metadata (often large session DBs)
+**/.adk/
+**/session.db
+
+# OS specific files
+.DS_Store
+
+# Temporary / Log files
+**/deployment.log
+**/*.tmp
