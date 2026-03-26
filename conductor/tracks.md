@@ -14,5 +14,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
+- [x] **Track: data_agent_20260326: Cross-Project ADK Data Agent for API analytics**
+  *Link: [./tracks/data_agent_20260326/](./tracks/data_agent_20260326/)*
+
+---
+
 - [x] **Track: visual_pizza_agent: new agent, based heavily on live_api_pizza, generating final image of the pizza in frontend**
 *Link: [./archive/visual_pizza_agent_20260309/](./archive/visual_pizza_agent_20260309/)*
