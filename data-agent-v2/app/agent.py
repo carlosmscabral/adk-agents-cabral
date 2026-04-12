@@ -14,8 +14,6 @@
 
 import os
 from functools import cached_property
-from typing import Any
-
 import google.auth
 from dotenv import load_dotenv
 
@@ -37,41 +35,34 @@ os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
 
-# --- THE "SILVER BULLET" FIX ---
-# We subclass Gemini to decouple the model location from the Agent Engine session location.
 class GlobalGemini(Gemini):
-    """Subclass of Gemini to force the 'global' location for the model client."""
+    """Gemini subclass that forces location='global' for the LLM client.
+
+    Agent Engine sets GOOGLE_CLOUD_LOCATION to its deployment region (e.g.
+    us-central1) for session services, but preview models like
+    gemini-3-flash-preview are only available at the 'global' endpoint.
+    This subclass decouples the model endpoint from the session endpoint
+    by explicitly passing location='global' to the google.genai.Client.
+    """
 
     @cached_property
     def api_client(self) -> Client:
-        from google.genai import Client
-
-        base_url = self.base_url
-
-        kwargs: dict[str, Any] = {
-            "http_options": types.HttpOptions(
+        return Client(
+            http_options=types.HttpOptions(
                 headers=self._tracking_headers(),
                 retry_options=self.retry_options,
-                base_url=base_url,
+                base_url=self.base_url,
             ),
-            # Force the location to 'global' specifically for the LLM API calls,
-            # leaving the global OS environment untouched for session services.
-            "location": "global",
-            "vertexai": True,  # Mandatory when overriding locations in Vertex
-        }
-        
-        # O construtor original do ADK não passa project explicitly se estiver vazio,
-        # mas o GenAI v1.6+ requer project quando vertexai=True e passamos location
-        if os.environ.get("GOOGLE_CLOUD_PROJECT"):
-            kwargs["project"] = os.environ.get("GOOGLE_CLOUD_PROJECT")
-
-        return Client(**kwargs)
+            location="global",
+            vertexai=True,
+            project=os.environ.get("GOOGLE_CLOUD_PROJECT"),
+        )
 
 
 # Data Agent Configuration
 DATA_AGENT_PROJECT_ID = os.environ.get("DATA_AGENT_PROJECT_ID", "cabral-apigee")
 DATA_AGENT_ID = os.environ.get("DATA_AGENT_ID", "agent_6a22b27c-5d07-4c7b-86c7-9e66e0538be3")
-DATA_AGENT_LOCATION = os.environ.get("DATA_AGENT_LOCATION", "us-central1")
+DATA_AGENT_LOCATION = os.environ.get("DATA_AGENT_LOCATION", "global")
 
 # Use ADC for Data Agent interactions
 application_default_credentials, _ = google.auth.default(

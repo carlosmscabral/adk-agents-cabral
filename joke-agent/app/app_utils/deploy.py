@@ -175,7 +175,7 @@ def setup_agent_identity(client: Any, project: str, display_name: str) -> Any:
 )
 @click.option(
     "--display-name",
-    default="data-agent-v2",
+    default="joke-agent",
     help="Display name for the agent engine",
 )
 @click.option(

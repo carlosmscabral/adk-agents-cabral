@@ -10,3 +10,6 @@ adk-samples/
 **/.venv/
 **/session.db
 simple-apigee-mcp/
+.claude/settings.local.json
+.claude/plans/
+.claude/memory/

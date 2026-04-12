@@ -21,35 +21,25 @@ from google.adk.artifacts import GcsArtifactService, InMemoryArtifactService
 from google.cloud import logging as google_cloud_logging
 from vertexai.agent_engines.templates.adk import AdkApp
 
-# A variável original do sistema (geralmente us-central1 no deploy)
-ORIGINAL_LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION")
-
 from app.agent import app as adk_app
 from app.app_utils.telemetry import setup_telemetry
 from app.app_utils.typing import Feedback
 
-# Load environment variables from .env file at runtime
 load_dotenv()
 
 
 class AgentEngineApp(AdkApp):
     def set_up(self) -> None:
-        """Initialize the agent engine app with logging and telemetry."""
-        # 1. Mantemos a localização original para telemetria e sessão
-        if ORIGINAL_LOCATION:
-            os.environ["GOOGLE_CLOUD_LOCATION"] = ORIGINAL_LOCATION
-            
+        """Initialize the agent engine app with logging and telemetry.
+
+        No GOOGLE_CLOUD_LOCATION manipulation here — the GlobalGemini subclass
+        in agent.py handles the model->global routing. Keeping the env var
+        at the deployment region (us-central1) so session services, telemetry,
+        and Gemini Enterprise discovery all use the correct regional endpoint.
+        """
         vertexai.init()
         setup_telemetry()
-        
-        # 2. Inicializamos o ADK (Sessão Regional)
         super().set_up()
-        
-        # 3. Mudamos para Global APENAS para o modelo Gemini 3 funcionar
-        # Isso acontece depois que o serviço de sessão já foi instanciado.
-        model_location = os.environ.get("MODEL_LOCATION", "global")
-        os.environ["GOOGLE_CLOUD_LOCATION"] = model_location
-        
         logging.basicConfig(level=logging.INFO)
         logging_client = google_cloud_logging.Client()
         self.logger = logging_client.logger(__name__)
