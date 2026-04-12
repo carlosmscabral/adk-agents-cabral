@@ -32,14 +32,24 @@ load_dotenv()
 class AgentEngineApp(AdkApp):
     def set_up(self) -> None:
         """Initialize the agent engine app with logging and telemetry."""
+        # 1. Garantimos que Vertex AI inicializa na região do compute (us-central1)
+        # Isso garante que a telemetria e o tracing (Cloud Trace) funcionem.
         vertexai.init()
         setup_telemetry()
+        
+        # 2. Chamamos a inicialização padrão do ADK
+        # O SUPER().SET_UP() inicializa o banco de sessões regional.
+        # Nesse momento, a variável GOOGLE_CLOUD_LOCATION é us-central1 (default).
         super().set_up()
+        
+        # 3. APÓS a infra estar pronta, trocamos a variável para 'global' 
+        # Isso permite que o modelo gemini-3 ache seu endpoint sem dar 404.
+        model_location = os.environ.get("MODEL_LOCATION", "global")
+        os.environ["GOOGLE_CLOUD_LOCATION"] = model_location
+        
         logging.basicConfig(level=logging.INFO)
         logging_client = google_cloud_logging.Client()
         self.logger = logging_client.logger(__name__)
-        if gemini_location:
-            os.environ["GOOGLE_CLOUD_LOCATION"] = gemini_location
 
     def register_feedback(self, feedback: dict[str, Any]) -> None:
         """Collect and log feedback."""
@@ -53,7 +63,6 @@ class AgentEngineApp(AdkApp):
         return operations
 
 
-gemini_location = os.environ.get("GOOGLE_CLOUD_LOCATION")
 logs_bucket_name = os.environ.get("LOGS_BUCKET_NAME")
 agent_engine = AgentEngineApp(
     app=adk_app,

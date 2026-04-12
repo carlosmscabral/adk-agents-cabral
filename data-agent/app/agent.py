@@ -29,9 +29,11 @@ from google.adk.tools.data_agent.data_agent_toolset import DataAgentToolset
 load_dotenv()
 
 # Setup Vertex AI and standard project context
+# We use ADC and the default project/location provided by Agent Engine (us-central1)
+# O override de localização (global) acontece apenas no agent_engine_app.py
+# para não quebrar a inicialização das sessões no Gemini Enterprise.
 _, project_id = google.auth.default()
 os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
-os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
 # Data Agent Configuration
@@ -44,15 +46,10 @@ application_default_credentials, _ = google.auth.default(
     scopes=["https://www.googleapis.com/auth/cloud-platform"]
 )
 
-# Optional: Add a simple check to verify token presence (might need refresh)
-import logging
-try:
-    import google.auth.transport.requests
-    request = google.auth.transport.requests.Request()
-    application_default_credentials.refresh(request)
-    logging.info("Credential refresh successful")
-except Exception as e:
-    logging.warning(f"Initial credential refresh failed: {e}")
+# Mandatory refresh for DataAgentToolset
+import google.auth.transport.requests
+auth_request = google.auth.transport.requests.Request()
+application_default_credentials.refresh(auth_request)
 
 credentials_config = DataAgentCredentialsConfig(
     credentials=application_default_credentials
