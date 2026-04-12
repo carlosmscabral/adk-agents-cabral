@@ -280,6 +280,55 @@ client. Never use both. Always prefer the subclass.
 
 ---
 
+## Case Study: Token Expiration in Long-Lived Agent Engine Sessions
+
+**Problem**: `data-agent-v2` worked on first use but returned **401 errors after
+~1 hour** of inactivity in Agent Engine (both Playground and Gemini Enterprise).
+
+**Root cause**: ADC on Agent Engine returns `google.auth.compute_engine.Credentials`
+(NOT `google.oauth2.credentials.Credentials`). The ADK's `GoogleCredentialsManager`
+at `_google_credentials.py:193` shortcuts non-OAuth2 credentials:
+```python
+if creds and not isinstance(creds, google.oauth2.credentials.Credentials):
+    return creds  # ← NO REFRESH CHECK
+```
+Then `_get_http_headers()` reads `credentials.token` — a cached string from the
+initial refresh at module load time. After the ~1-hour token TTL expires, all
+Data Agent API calls fail with 401.
+
+**Fix**: `AutoRefreshCredentials` wrapper that calls `refresh()` lazily when
+`.token` is accessed and the credential has expired:
+```python
+class AutoRefreshCredentials(google.auth.credentials.Credentials):
+    def __init__(self, base_credentials):
+        self._base = base_credentials
+
+    @property
+    def token(self):
+        if not self._base.valid:
+            self._base.refresh(google.auth.transport.requests.Request())
+        return self._base.token
+
+    @token.setter
+    def token(self, value):
+        pass
+
+    # ... (see data-agent-v2/app/agent.py for full implementation)
+```
+
+Usage:
+```python
+credentials_config = DataAgentCredentialsConfig(
+    credentials=AutoRefreshCredentials(application_default_credentials)
+)
+```
+
+**Note**: Must inherit from `google.auth.credentials.Credentials` (Pydantic
+validation in `DataAgentCredentialsConfig` checks `isinstance`). Must provide
+no-op setters for `token` and `expiry` since the base `__init__` tries to set them.
+
+---
+
 ## Reference Implementations
 
 **Minimal (flow validation)**:

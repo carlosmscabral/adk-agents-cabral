@@ -14,7 +14,9 @@
 
 import os
 from functools import cached_property
+
 import google.auth
+import google.auth.transport.requests
 from dotenv import load_dotenv
 
 from google.adk.agents import Agent
@@ -59,23 +61,62 @@ class GlobalGemini(Gemini):
         )
 
 
+class AutoRefreshCredentials(google.auth.credentials.Credentials):
+    """Wraps ADC credentials to auto-refresh the token before it's read.
+
+    The ADK's GoogleCredentialsManager bypasses refresh for non-OAuth2
+    credentials (compute engine ADC on Agent Engine). This wrapper ensures
+    the token is fresh when DataAgentToolset's _get_http_headers() reads .token.
+    """
+
+    def __init__(self, base_credentials):
+        self._base = base_credentials
+        # Skip super().__init__() — it sets self.token = None which
+        # conflicts with our property. We delegate everything to _base.
+
+    @property
+    def token(self):
+        if not self._base.valid:
+            self._base.refresh(google.auth.transport.requests.Request())
+        return self._base.token
+
+    @token.setter
+    def token(self, value):
+        pass  # no-op — token is managed by _base
+
+    @property
+    def valid(self):
+        return self._base.valid
+
+    @property
+    def expired(self):
+        return self._base.expired
+
+    @property
+    def expiry(self):
+        return self._base.expiry
+
+    @expiry.setter
+    def expiry(self, value):
+        pass  # no-op — expiry is managed by _base
+
+    def refresh(self, request):
+        self._base.refresh(request)
+
+
 # Data Agent Configuration
 DATA_AGENT_PROJECT_ID = os.environ.get("DATA_AGENT_PROJECT_ID", "cabral-apigee")
 DATA_AGENT_ID = os.environ.get("DATA_AGENT_ID", "agent_6a22b27c-5d07-4c7b-86c7-9e66e0538be3")
 DATA_AGENT_LOCATION = os.environ.get("DATA_AGENT_LOCATION", "global")
 
-# Use ADC for Data Agent interactions
+# Use ADC for Data Agent interactions — wrapped in AutoRefreshCredentials
+# to handle token expiration in long-lived Agent Engine sessions
 application_default_credentials, _ = google.auth.default(
     scopes=["https://www.googleapis.com/auth/cloud-platform"]
 )
 
-# Mandatory refresh for DataAgentToolset
-import google.auth.transport.requests
-auth_request = google.auth.transport.requests.Request()
-application_default_credentials.refresh(auth_request)
-
 credentials_config = DataAgentCredentialsConfig(
-    credentials=application_default_credentials
+    credentials=AutoRefreshCredentials(application_default_credentials)
 )
 
 tool_config = DataAgentToolConfig(
