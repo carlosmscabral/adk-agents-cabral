@@ -1,0 +1,767 @@
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.reasoningEngineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:ai-client@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-api@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-auto-insurance-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.user"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-servicemesh.iam.gserviceaccount.com"
+      ],
+      "role": "roles/anthosservicemesh.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:apigee-runtime-orgadmin@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:cabral-apigee-sa@cabral-app-integration.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:apigee-envoy-adapter-sa@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:preview-gsa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.analyticsAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-api@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-auto-insurance-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.analyticsEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:preview-gsa@cabral-apigee.iam.gserviceaccount.com",
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/apigee.apiAdminV2"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.apiReaderV2"
+    },
+    {
+      "members": [
+        "serviceAccount:apigee-proxy-service-account@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.deploymentInvoker"
+    },
+    {
+      "members": [
+        "serviceAccount:drupa-portal-sa@cabral-apigee.iam.gserviceaccount.com",
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/apigee.developerAdmin"
+    },
+    {
+      "members": [
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/apigee.portalAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:api-hub-mock-renderer@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigeeregistry.viewer"
+    },
+    {
+      "members": [
+        "serviceAccount:apigee-mcp-sa@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-gae-service.iam.gserviceaccount.com"
+      ],
+      "role": "roles/appengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gae-api-prod.google.com.iam.gserviceaccount.com"
+      ],
+      "role": "roles/appengineflex.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:243779034093@cloudbuild.gserviceaccount.com",
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/artifactregistry.writer"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:bq-api-service@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-280799742875@gcp-sa-aiplatform-re.iam.gserviceaccount.com",
+        "user:sampleuser@carloscabral.altostrat.com"
+      ],
+      "role": "roles/bigquery.dataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:bq-api-service@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.jobUser"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "user:sampleuser@carloscabral.altostrat.com"
+      ],
+      "role": "roles/bigquery.readSessionUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-280799742875@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.user"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/cloudaicompanion.codeToolsUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-280799742875@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.user"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-cloudasset.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudasset.serviceAgent"
+    },
+    {
+      "members": [
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/cloudbuild.builds.editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-cloudkms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:drupa-portal-sa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudsql.client"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-cloudtasks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudtasks.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudtrace.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:preview-gsa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/connectors.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-connectors.iam.gserviceaccount.com"
+      ],
+      "role": "roles/connectors.serviceAgent"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/container.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:service-243779034093@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datacatalog.categoryAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-dataplex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataplex.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.user"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/discoveryengine.user"
+    },
+    {
+      "members": [
+        "serviceAccount:apigee-dlp-service-account@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.user"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093@cloudbuild.gserviceaccount.com",
+        "serviceAccount:243779034093@cloudservices.gserviceaccount.com",
+        "serviceAccount:apigee-proxy-service-account@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/eventarc.eventReceiver"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-eventarc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/eventarc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-firebase.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebase.managementServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:firebase-adminsdk-fbsvc@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebase.sdkAdminServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cabral-apigee@appspot.gserviceaccount.com"
+      ],
+      "role": "roles/firebaseauth.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-280799742875@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+      ],
+      "role": "roles/geminidataanalytics.dataAgentUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-geminidataanalytics.iam.gserviceaccount.com"
+      ],
+      "role": "roles/geminidataanalytics.serviceAgent"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/gkehub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:firebase-adminsdk-fbsvc@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountTokenCreator"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093@cloudbuild.gserviceaccount.com",
+        "serviceAccount:ai-client@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-api@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-auto-insurance-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-integrations.iam.gserviceaccount.com",
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/integrations.apigeeIntegrationAdminRole"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/integrations.integrationEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/integrations.integrationInvoker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-integrations.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-test-integrations.iam.gserviceaccount.com"
+      ],
+      "role": "roles/integrations.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:apigee-proxy-service-account@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:drupa-portal-sa@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-api@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-auto-insurance-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.logWriter"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/meshconfig.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-meshcontrolplane.iam.gserviceaccount.com"
+      ],
+      "role": "roles/meshcontrolplane.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-meshdataplane.iam.gserviceaccount.com"
+      ],
+      "role": "roles/meshdataplane.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-api@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:drupa-portal-sa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-mcmetering.iam.gserviceaccount.com"
+      ],
+      "role": "roles/multiclustermetering.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:preview-gsa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkservices.serviceExtensionsAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-integrations.iam.gserviceaccount.com",
+        "serviceAccount:service-832587131338@gcp-sa-integrations.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.editor"
+    },
+    {
+      "members": [
+        "serviceAccount:832587131338-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.publisher"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/run.admin"
+    },
+    {
+      "members": [
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/run.developer"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:apigee-mcp-sa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.invoker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:drupa-portal-sa@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/runtimeconfig.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:llm-cymbal-retail-agent@cabral-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.viewer"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/servicemanagement.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageAdmin"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/serviceusage.serviceUsageConsumer"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/stackdriver.resourceMetadata.writer"
+    },
+    {
+      "members": [
+        "user:admin@carloscabral.altostrat.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:832587131338-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:243779034093-compute@developer.gserviceaccount.com",
+        "serviceAccount:drupa-portal-sa@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:mtls-proxy-service-account@cabral-apigee.iam.gserviceaccount.com",
+        "serviceAccount:service-243779034093@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "user:jadelgado@carloscabral.altostrat.com"
+      ],
+      "role": "roles/viewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-243779034093@gcp-sa-workflows.iam.gserviceaccount.com"
+      ],
+      "role": "roles/workflows.serviceAgent"
+    }
+  ],
+  "etag": "BwZN8MfHKQA=",
+  "version": 1
+}
