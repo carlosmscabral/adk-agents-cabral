@@ -1,40 +1,32 @@
-# A2A Artifact Transfer Demo (pt-BR)
+# A2A Hybrid Artifact Transfer Demo (pt-BR)
 
-Este demo demonstra como transferir arquivos PDF pesados entre dois agentes ADK usando o protocolo A2A e o sistema de Artifacts do ADK.
+Este demo demonstra como transferir arquivos PDF pesados entre dois agentes ADK usando o protocolo A2A em uma **arquitetura híbrida** (Agent Runtime + Cloud Run), otimizada para o Gemini Enterprise App.
 
-## Estrutura
+## Arquitetura
 
-- **a2a-pdf-root:** Agente de recepção (Root). Recebe o PDF do usuário, salva-o com um UUID no namespace `user:` e delega a análise via A2A.
-- **a2a-pdf-analyzer:** Agente remoto (Exposed). Recebe a referência do artefato, carrega o PDF do storage compartilhado e realiza a análise jurídica em Português-BR.
+- **a2a-pdf-root (Agent Runtime):** Agente de recepção. Identifica o PDF enviado pelo usuário (indexado automaticamente pelo GE App), extrai o nome do arquivo via Regex e delega a análise via A2A.
+- **a2a-pdf-analyzer (Cloud Run):** Agente remoto especialista. Recebe a referência do arquivo, carrega-o do bucket GCS compartilhado via `LoadArtifactsTool` e realiza a análise jurídica.
 
-## Como Funciona a Transferência de Arquivos
+## Destaques Técnicos
 
-Para evitar colisões e garantir que arquivos grandes não sobrecarreguem o canal de comunicação A2A:
+1.  **Híbrido:** O agente receptor roda no Agent Runtime (nativo do Gemini Enterprise), enquanto o agente analisador roda no Cloud Run para garantir descoberta A2A nativa (`/.well-known`).
+2.  **Payload Leve:** Implementação de conversor de partes que remove os bytes do PDF da mensagem A2A, evitando erros de desconexão TCP.
+3.  **Identificação Nativa:** Integração com as tags do Gemini Enterprise App (`<start_of_user_uploaded_file>`).
+4.  **Storage Compartilhado:** Uso de um bucket GCS global para persistência de artefatos entre diferentes infraestruturas de agentes.
 
-1. O agente root salva o arquivo usando `context.save_artifact("user:contrato_{uuid}.pdf", part)`.
-2. O nome do arquivo (referência) é passado como uma string no payload A2A.
-3. O agente remoto usa `LoadArtifactsTool` para buscar o conteúdo do arquivo no `ArtifactService` compartilhado (GCS em produção).
+## Como Executar
 
-## Passos para Implantação
+### 1. Configuração de Variáveis
+Edite o arquivo `deploy.sh` na raiz deste diretório para configurar seu `PROJECT_ID`, `REGION` e `GE_APP_ID`.
 
-1. **Deploy do Analyzer:**
-   ```bash
-   cd a2a-pdf-analyzer
-   agents-cli deploy
-   ```
-   Anote a URL do serviço gerada pelo Agent Engine.
+### 2. Deploy Automatizado
+Execute o script de deploy para subir toda a infraestrutura e configurar as permissões IAM necessárias:
+```bash
+./deploy.sh
+```
 
-2. **Configuração do Root:**
-   Edite `a2a-pdf-root/app/agent.py` e substitua `ANALYZER_AGENT_URL` pela URL do analyzer (ou defina a variável de ambiente `ANALYZER_AGENT_URL`).
+### 3. Registro
+O script já realiza a publicação do Root Agent no Gemini Enterprise. Basta acessar o console e validar a integração.
 
-3. **Deploy do Root:**
-   ```bash
-   cd a2a-pdf-root
-   agents-cli deploy
-   ```
-
-4. **Registro:**
-   Registre apenas o `a2a-pdf-root` no console do Gemini Enterprise App.
-
-## Requisitos de Infraestrutura
-Ambos os agentes devem estar configurados para usar o mesmo bucket do Google Cloud Storage em seu `GcsArtifactService` para que possam compartilhar os arquivos. O Agent Engine gerencia isso automaticamente se configurado no `agent_engine_app.py` ou via variáveis de ambiente.
+## Documentação Detalhada
+Para entender todos os desafios técnicos superados neste demo, leia o arquivo [LESSONS.md](./LESSONS.md).
