@@ -54,8 +54,12 @@ Cada interação no chat (uma mensagem do usuário, uma resposta do modelo, uma 
 No Gemini Enterprise App, o arquivo não chega como um objeto binário direto na chamada da ferramenta. Ele chega como uma **marcação textual** injetada pelo Vertex AI na mensagem anterior do usuário. 
 A ferramenta `salvar_contrato` navega pelos eventos por causa disso:
 1.  **Histórico Reverso:** Percorremos `reversed(tool_context.session.events)` para encontrar a mensagem mais recente do usuário.
-2.  **Extração via Regex:** Como o arquivo foi "textualizado" em tags como `<start_of_user_uploaded_file: contrato.pdf>`, usamos o Regex `r"start_of_user_uploaded_file:\s*([^\s\n>]+)"` para extrair a string exata do nome do arquivo.
-3.  **Referência para o GCS:** Esse nome extraído é a chave de busca. Como o bucket é compartilhado e o GE App usa nomes previsíveis, o Analisador conseguirá reconstruir o caminho no bucket `gs://.../app/user_id/session_id/NOME_DO_ARQUIVO/0` e carregar os bytes.
+2.  **Extração via Regex:** Como o arquivo foi "textualizado" em tags como `<start_of_user_uploaded_file: contrato.pdf>`, usamos o Regex `r"start_of_user_uploaded_file:\s*([^\s\n>]+)"` para extrair a string exata do nome do arquivo (ex: `contrato.pdf`).
+3.  **Resolução de Artefatos:** É importante notar que o Regex **não extrai o path completo do GCS** (ex: `gs://bucket/path...`). Ele captura apenas o **nome lógico** do arquivo.
+4.  **A Mágica do Contexto:** Quando o Analisador recebe apenas a string `contrato.pdf` e chama `LoadArtifactsTool`, o `GcsArtifactService` do ADK entra em ação:
+    -   Ele usa o `user_id` e o `session_id` que foram transportados automaticamente pelo protocolo A2A.
+    -   Ele reconstrói o caminho físico no bucket: `app/{user_id}/{session_id}/contrato.pdf/0`.
+    -   Essa abstração permite que os agentes troquem referências simples (nomes de arquivos) enquanto o ADK cuida da complexidade do storage.
 
 Este padrão de "leitura de histórico" é a forma mais resiliente de integrar agentes ADK com interfaces que realizam pré-processamento de anexos, como o Gemini Enterprise.
 
