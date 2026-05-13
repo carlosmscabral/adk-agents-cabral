@@ -41,9 +41,25 @@ O Gemini Enterprise App não "adivinha" onde salvar os arquivos. A conexão é e
 ## 3. Comportamento das Tags do GE App
 O arquivo **não chega** como bytes (`inline_data`) para o Root Agent. O Vertex AI intercepta o anexo e injeta tags de marcação no prompt do usuário:
 - **Exemplo:** `... analise este documento <start_of_user_uploaded_file: contrato.pdf> ...`
-- **Solução:** Implementamos uma ferramenta (`salvar_contrato`) que usa **Regex** para capturar esse nome de arquivo. É essa string que viaja via A2A.
+- **Solução:** Implementamos uma ferramenta (`salvar_contrato`) que usa **Regex** para capturar esse nome de arquivo navegando pelos eventos de sessão.
 
-## 4. Por que a Arquitetura Híbrida? (Cloud Run vs Agent Runtime)
+## 4. Mergulho Técnico: Eventos de Sessão e Captura de Arquivo
+
+Para que o Root Agent saiba qual arquivo enviar ao Analisador, ele precisa consultar o histórico da conversa. No ADK, isso é feito através do `tool_context.session.events`.
+
+### O que são os Eventos de Sessão?
+Cada interação no chat (uma mensagem do usuário, uma resposta do modelo, uma chamada de ferramenta) é registrada como um `Event`. Cada evento contém `parts`, que podem ser texto, dados binários ou referências de arquivos.
+
+### Por que buscar nos eventos em vez de receber como parâmetro?
+No Gemini Enterprise App, o arquivo não chega como um objeto binário direto na chamada da ferramenta. Ele chega como uma **marcação textual** injetada pelo Vertex AI na mensagem anterior do usuário. 
+A ferramenta `salvar_contrato` navega pelos eventos por causa disso:
+1.  **Histórico Reverso:** Percorremos `reversed(tool_context.session.events)` para encontrar a mensagem mais recente do usuário.
+2.  **Extração via Regex:** Como o arquivo foi "textualizado" em tags como `<start_of_user_uploaded_file: contrato.pdf>`, usamos o Regex `r"start_of_user_uploaded_file:\s*([^\s\n>]+)"` para extrair a string exata do nome do arquivo.
+3.  **Referência para o GCS:** Esse nome extraído é a chave de busca. Como o bucket é compartilhado e o GE App usa nomes previsíveis, o Analisador conseguirá reconstruir o caminho no bucket `gs://.../app/user_id/session_id/NOME_DO_ARQUIVO/0` e carregar os bytes.
+
+Este padrão de "leitura de histórico" é a forma mais resiliente de integrar agentes ADK com interfaces que realizam pré-processamento de anexos, como o Gemini Enterprise.
+
+## 5. Por que a Arquitetura Híbrida? (Cloud Run vs Agent Runtime)
 
 | Recurso | Agent Runtime (RE) | Cloud Run |
 | :--- | :--- | :--- |
