@@ -50,11 +50,24 @@ Para que o Root Agent saiba qual arquivo enviar ao Analisador, ele precisa consu
 ### O que são os Eventos de Sessão?
 Cada interação no chat (uma mensagem do usuário, uma resposta do modelo, uma chamada de ferramenta) é registrada como um `Event`. Cada evento contém `parts`, que podem ser texto, dados binários ou referências de arquivos.
 
-### Por que buscar nos eventos em vez de receber como parâmetro?
-No Gemini Enterprise App, o arquivo não chega como um objeto binário direto na chamada da ferramenta. Ele chega como uma **marcação textual** injetada pelo Vertex AI na mensagem anterior do usuário. 
-A ferramenta `salvar_contrato` navega pelos eventos por causa disso:
-1.  **Histórico Reverso:** Percorremos `reversed(tool_context.session.events)` para encontrar a mensagem mais recente do usuário.
-2.  **Extração via Regex:** Como o arquivo foi "textualizado" em tags como `<start_of_user_uploaded_file: contrato.pdf>`, usamos o Regex `r"start_of_user_uploaded_file:\s*([^\s\n>]+)"` para extrair a string exata do nome do arquivo (ex: `contrato.pdf`).
+### Anatomia de um Evento com Arquivo (JSON)
+Diferente de um upload direto via API, no GE App o arquivo é "injetado" como texto no histórico. Veja como o Root Agent enxerga o evento:
+
+```json
+{
+  "author": "user",
+  "content": {
+    "parts": [
+      { "text": "Analise este arquivo: " },
+      { "text": "\n<start_of_user_uploaded_file: contrato_v1.pdf>\n" },
+      { "text": "<end_of_user_uploaded_file: contrato_v1.pdf>" }
+    ]
+  }
+}
+```
+
+### Extração via Regex
+Como o arquivo foi "textualizado" em tags, usamos o Regex `r"start_of_user_uploaded_file:\s*([^\s\n>]+)"` para extrair a string exata do nome do arquivo (ex: `contrato_v1.pdf`).
 3.  **Resolução de Artefatos:** É importante notar que o Regex **não extrai o path completo do GCS** (ex: `gs://bucket/path...`). Ele captura apenas o **nome lógico** do arquivo.
 4.  **A Mágica do Contexto:** Quando o Analisador recebe apenas a string `contrato.pdf` e chama `LoadArtifactsTool`, o `GcsArtifactService` do ADK entra em ação:
     -   Ele usa o `user_id` e o `session_id` que foram transportados automaticamente pelo protocolo A2A.
