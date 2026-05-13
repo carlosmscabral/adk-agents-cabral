@@ -1,33 +1,70 @@
 # Lições Aprendidas: Transferência de Arquivos A2A Híbrida
 
-Este documento detalha os desafios técnicos e as soluções implementadas para permitir a transferência de arquivos PDF pesados entre agentes ADK usando o protocolo A2A em uma arquitetura híbrida (Agent Runtime + Cloud Run).
+Este documento consolida o conhecimento técnico adquirido durante a implementação da transferência de arquivos PDF entre agentes ADK em uma arquitetura híbrida.
 
-## 1. Comportamento do Gemini Enterprise (GE) App
-Descobrimos que o GE App possui um comportamento de indexação automática que afeta como os arquivos são recebidos pelo agente:
-- **Indexação Prévia:** Ao fazer o upload de um PDF no chat, o GE App salva o arquivo no bucket de artifacts compartilhado (`gs://.../app/{user_id}/{session_id}/...`) **antes** de chamar o Root Agent.
-- **Tags de Arquivo:** O conteúdo do arquivo não chega como bytes (`inline_data`) para o Root Agent no prompt inicial. Em vez disso, o Vertex AI injeta tags de texto como `<start_of_user_uploaded_file: nome.pdf>`.
-- **Solução:** A ferramenta `salvar_contrato` usa **Regex** para capturar o nome do arquivo diretamente dessas tags, permitindo que o Root Agent passe essa referência ao próximo agente sem precisar re-processar o arquivo.
+## 1. Arquitetura e Fluxo de Dados (Sequência)
 
-## 2. A2A: Por que mover para o Cloud Run?
-- **Restrições do Agent Runtime:** O ambiente gerenciado do Agent Runtime (Vertex AI) possui roteamento restrito que dificulta a exposição de caminhos padrão como `/.well-known/agent-card.json`.
-- **Descoberta Nativa:** No Cloud Run, temos controle total sobre o servidor FastAPI, permitindo que os endpoints de descoberta A2A funcionem nativamente e sem redirecionamentos complexos que causavam erros 404.
+O sucesso da transferência de arquivos pesados depende de um "triângulo" de integração entre o Gemini Enterprise (GE) App, o Google Cloud Storage (GCS) e os agentes.
 
-## 3. O "Bug do Localhost" e Identidade do Card
-- **O Problema:** Identificamos que a função `to_a2a()` do ADK, se não configurada com `app_url` explícito, pode gerar um Agent Card onde o campo `"url"` aponta para `http://localhost:8000`.
-- **O Efeito:** O Root Agent baixava o card com sucesso, mas tentava enviar mensagens para o próprio `localhost` (dentro do seu container no Agent Runtime), resultando em erros genéricos de `Server disconnected`.
-- **A Solução:** Forçamos a URL estável do Cloud Run tanto no servidor (`APP_URL`) quanto no cliente (bypass de card no Root Agent).
+```text
+                               +-----------------------------+
+                               |      GCS BUCKET             |
+                               | (vibe-cabral-artifacts)     |
+                               +-----------------------------+
+                                   ^                ^
+         (1) Upload Automático     |                | (5) Leitura via
+             antes da chamada      |                |     LoadArtifactsTool
+                                   |                |
+  +------------+             +-----+-----+    +-----+------------+
+  |  USUÁRIO   | --(PDF)-->  |  GE APP   |    | ANALYZER AGENT   |
+  +------------+             +-----+-----+    | (Cloud Run)      |
+                                   |          +------------------+
+                                   | (2) Chamada    ^
+                                   |     do Root    | (4) Mensagem A2A
+                                   v                |     (Apenas Texto)
+                             +-----------+          |
+                             | ROOT AGENT| ---------+
+                             | (Agent RE)|
+                             +-----------+
+                                (3) Regex Tag
+                                    Capture
+```
 
-## 4. Estabilidade do Protocolo: JSON-RPC vs. REST
-- **Falha no REST:** O endpoint REST v1 (`/v1/message:send`) mostrou-se instável em containers Cloud Run, apresentando erros de desserialização Protobuf (`Message type "a2a.v1.Message" has no field named "parts"`) que muitas vezes eram mascarados como erros 403 ou 500 pelo Google Frontend.
-- **Vantagem do JSON-RPC:** O transporte **JSONRPC** (na raiz `/`) provou ser o método mais robusto e estável para a comunicação A2A entre os agentes, evitando conflitos de esquema de mensagem.
+## 2. A Chave da Integração: `LOGS_BUCKET_NAME`
 
-## 5. Otimização de Payload (TCP Disconnection)
-- **Bytes Pesados:** Tentar enviar os bytes completos de um PDF dentro de uma mensagem A2A excede os limites de tamanho do payload e causa quedas de conexão TCP.
-- **Solução:** Implementamos um conversor customizado (`genai_part_converter`) no Root Agent que remove partes de `inline_data` (PDF) do payload. O Analisador recebe apenas a referência e usa a ferramenta `load_artifacts` para ler o arquivo diretamente do GCS compartilhado.
+O Gemini Enterprise App não "adivinha" onde salvar os arquivos. A conexão é estabelecida via metadados:
+1.  **Configuração:** Durante o deploy, definimos `LOGS_BUCKET_NAME=nome-do-bucket`.
+2.  **Registro:** Ao publicar o agente no GE App, o ecossistema Google lê essa variável.
+3.  **Ação:** O GE App passa a usar esse bucket como o "dropzone" para qualquer anexo naquela sessão de chat.
+4.  **Estrutura:** O App cria automaticamente o caminho: `app/{user_id}/{session_id}/{filename}/0`.
 
-## 6. IAM e Latência de Propagação
-- **Delay no Acesso:** Mesmo ao tornar um serviço público via `gcloud`, existe uma latência de propagação de políticas IAM no GCP (60-120 segundos). Testes imediatos após o deploy podem falhar com 403 Forbidden falsos.
-- **Bypass Estratégico:** "Chumbar" o objeto `AgentCard` no Root Agent elimina a dependência dessa fase de negociação inicial, tornando a inicialização do agente mais rápida e resiliente a falhas temporárias de rede ou IAM.
+## 3. Comportamento das Tags do GE App
+O arquivo **não chega** como bytes (`inline_data`) para o Root Agent. O Vertex AI intercepta o anexo e injeta tags de marcação no prompt do usuário:
+- **Exemplo:** `... analise este documento <start_of_user_uploaded_file: contrato.pdf> ...`
+- **Solução:** Implementamos uma ferramenta (`salvar_contrato`) que usa **Regex** para capturar esse nome de arquivo. É essa string que viaja via A2A.
+
+## 4. Por que a Arquitetura Híbrida? (Cloud Run vs Agent Runtime)
+
+| Recurso | Agent Runtime (RE) | Cloud Run |
+| :--- | :--- | :--- |
+| **Roteamento** | Gerenciado e Restrito | Livre / FastAPI Padrão |
+| **Discovery A2A** | Frequentemente falha (404) | Nativo (`/.well-known/`) |
+| **Protocolo REST** | Instável em alguns cenários | Suportado (mas JSON-RPC é melhor) |
+| **Recomendação** | Ótimo para o Agente Root | **Ideal para Agentes Exposed** |
+
+## 5. Troubleshooting de Protocolo e Identidade
+
+### O "Bug do Localhost"
+A função `to_a2a()` do ADK pode gerar um Agent Card apontando para `localhost:8000` se não receber um `app_url` explícito. Isso causa o erro genérico `Server disconnected` no cliente.
+- **Lição:** Sempre injete a URL estável do serviço no construtor do servidor e no cliente.
+
+### JSON-RPC: O Dialeto Seguro
+Tentativas de usar REST (`/v1/message:send`) no Cloud Run apresentaram falhas de desserialização (Erros 500/403).
+- **Lição:** Para A2A entre agentes Python, o transporte **`JSONRPC`** na raiz (`/`) provou ser o mais resiliente.
+
+### Otimização de Payload
+O protocolo A2A não foi feito para transportar megabytes de arquivos binários.
+- **Estratégia:** Use um `genai_part_converter` customizado no Root Agent para remover bytes de PDFs do payload. Passe apenas a referência e deixe o agente de destino carregar do GCS.
 
 ---
-*Este setup serve como referência organizacional para transferências de arquivos pesados via A2A no ecossistema Gemini Enterprise.*
+*Documento gerado como referência de engenharia para o projeto adk-agents-cabral.*
