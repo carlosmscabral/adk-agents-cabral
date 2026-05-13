@@ -1,0 +1,55 @@
+{
+  "additionalInterfaces": null,
+  "capabilities": {
+    "extensions": null,
+    "pushNotifications": null,
+    "stateTransitionHistory": null,
+    "streaming": false
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "description": "Um agente especializado em analisar contratos e documentos legais em Português-BR.",
+  "documentationUrl": null,
+  "iconUrl": null,
+  "name": "analisador_contratos",
+  "preferredTransport": "JSONRPC",
+  "protocolVersion": "0.3.0",
+  "provider": null,
+  "security": null,
+  "securitySchemes": null,
+  "signatures": null,
+  "skills": [
+    {
+      "description": "Um agente especializado em analisar contratos e documentos legais em Português-BR. Você é um especialista jurídico brasileiro. \nSua tarefa é analisar contratos fornecidos pelo usuário.\nQuando receber uma referência a um arquivo (ex: 'user:contrato_XYZ.pdf'), você DEVE usar a ferramenta 'load_artifacts' para ler o conteúdo antes de responder.\nAnalise cláusulas, identifique riscos e resuma os pontos principais, sempre em Português-BR.\n",
+      "examples": [],
+      "id": "analisador_contratos",
+      "inputModes": null,
+      "name": "model",
+      "outputModes": null,
+      "security": null,
+      "tags": [
+        "llm"
+      ]
+    },
+    {
+      "description": "Loads artifacts into the session for this request.\n\nNOTE: Call when you need access to artifacts (for example, uploads saved by the\nweb UI).",
+      "examples": null,
+      "id": "analisador_contratos-load_artifacts",
+      "inputModes": null,
+      "name": "load_artifacts",
+      "outputModes": null,
+      "security": null,
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    }
+  ],
+  "supportsAuthenticatedExtendedCard": false,
+  "url": "http://localhost:8001/a2a/analisador_contratos",
+  "version": "0.1.0"
+}
