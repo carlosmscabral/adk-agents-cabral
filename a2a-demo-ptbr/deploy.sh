@@ -2,10 +2,10 @@
 set -e
 
 # === CONFIGURAÇÕES GLOBAIS ===
-export PROJECT_ID="vibe-cabral"
-export REGION="us-east1"
-export BUCKET_NAME="vibe-cabral-artifacts"
-export GE_APP_ID="cabral-demo-ge_1772569093320"
+export PROJECT_ID="YOUR_PROJECT_ID"
+export REGION="YOUR_REGION"
+export BUCKET_NAME="YOUR_PROJECT_ID-artifacts"
+export GE_APP_ID="YOUR_GE_APP_ID"
 
 # Nomes de exibição
 ANALYZER_NAME="a2a-pdf-analyzer"

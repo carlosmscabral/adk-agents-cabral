@@ -17,7 +17,7 @@ os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
 # URL Estável do Analisador no Cloud Run
-ANALYZER_URL = os.environ.get("ANALYZER_AGENT_URL", "https://a2a-pdf-analyzer-280799742875.us-east1.run.app")
+ANALYZER_URL = os.environ.get("ANALYZER_AGENT_URL", "https://a2a-pdf-analyzer-YOUR_PROJECT_NUMBER.YOUR_REGION.run.app")
 
 def skip_heavy_parts_converter(part: types.Part) -> list:
     """Remove bytes de PDF do payload A2A para evitar erros de limite."""

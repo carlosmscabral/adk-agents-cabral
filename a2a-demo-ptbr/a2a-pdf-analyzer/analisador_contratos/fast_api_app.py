@@ -51,7 +51,7 @@ app = FastAPI(title="analisador_contratos")
 
 def setup_a2a(fastapi_app: FastAPI):
     # A URL estável que queremos no card
-    app_url = os.getenv('APP_URL', 'https://a2a-pdf-analyzer-280799742875.us-east1.run.app')
+    app_url = os.getenv('APP_URL', 'https://a2a-pdf-analyzer-YOUR_PROJECT_NUMBER.YOUR_REGION.run.app')
     
     agent_card = AgentCard(
         name="analisador_contratos",

@@ -9,7 +9,7 @@ O sucesso da transferência de arquivos pesados depende de um "triângulo" de in
 ```text
                                +-----------------------------+
                                |      GCS BUCKET             |
-                               | (vibe-cabral-artifacts)     |
+                               | (YOUR_PROJECT_ID-artifacts)     |
                                +-----------------------------+
                                    ^                ^
          (1) Upload Automático     |                | (5) Leitura via

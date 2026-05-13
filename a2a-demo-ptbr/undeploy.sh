@@ -1,7 +1,7 @@
 #!/bin/bash
 # Configurações de Ambiente
-PROJECT_ID="vibe-cabral"
-REGION="us-east1"
+PROJECT_ID="YOUR_PROJECT_ID"
+REGION="YOUR_REGION"
 
 echo "🗑️ Iniciando undeploy híbrido..."
 
